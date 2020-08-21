@@ -63,7 +63,7 @@ function Login(props){
     return(
         <form onSubmit = {submitHandler} name="LoginForm">
             <label htmlFor="email" className="email">
-                <input type="email" name="email" value={formData.email} onChange = {changeHandler} placeholder="Enter your email"/>
+                <input type="email" name="email" value={formData.email} onChange = {changeHandler} placeholder="Enter your email" autocomplete="off"/>
             </label>
             <label htmlFor="password" className="password">
                 <input type="password" name="password" value={formData.password} onChange = {changeHandler} placeholder="Enter your password"/>
