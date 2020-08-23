@@ -142,3 +142,54 @@ button:disabled {
   display: inline-block;
   margin-right: 5px;
 }
+
+.adminhome{
+  width:90%;
+  height: auto;
+  display: flex;
+  justify-items: center;
+  flex-direction: column;
+  margin: 2% 2%;
+  
+}
+
+.header{
+    display: flex;
+    width: 100%;
+    height: auto;
+    margin: 0% 2% 2% 1%;
+}
+
+.tasks{
+    display: flex;
+    border: 2px solid black;
+    box-shadow: 1px 2px #1b9086;
+    width: 90%;
+    height: auto;
+    border-radius: 30px;
+    margin: 0% 2%;
+}
+
+.open, .closed {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    width: 50%;
+    margin: 1% 2%;
+    border: 1px dotted black;
+    border-radius: 5px;
+}
+
+.task{
+  width: 80%;
+  height: auto;
+  border: 1px solid black;
+  margin: 1% auto;
+}
+
+.newTaskButton{
+  width: 80px;
+  height: 40px;
+  font-size: 0.9rem;
+  margin-left: 70%;
+}
