@@ -13,6 +13,7 @@ import axios from 'axios';
 import * as yup from "yup";
 
 function AdminNewTask(props) {
+
     const history = useHistory();
   
     const [newTaskFormData, setNewTaskFormData] = useState({
@@ -51,7 +52,7 @@ function AdminNewTask(props) {
             //update gloabl userData object and go back to Admin home
             // this should re-render Admin home with the newest task list
             history.goBack()
-        })
+        }, 500)
       });
     }
   

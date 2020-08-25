@@ -44,9 +44,10 @@ function SignUp(props) {
         signUpFormData
       )
       .then((res) => {
-        setTimeout(()=>{
-            history.push('/login')
-        })
+          
+        console.log(res);
+        history.push(`/${res.data.added[0].role}/${res.data.added[0].id}`);
+        
         
         setSignUpFormData({
           fname: "",
@@ -146,7 +147,7 @@ function SignUp(props) {
       <br />
       <select
         name="country"
-        id="country"
+        className="country"
         onChange={changeHandler}
         value={signUpFormData.country}
       >

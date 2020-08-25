@@ -28,20 +28,20 @@ function App() {
         <Route exact path="/login">
           <Login userData={userData} />
         </Route>
-        <Route exact path="/admin">
+        <Route exact path="/Admin/:user_id">
           <AdminHome userData={userData} />
         </Route>
-        <Route path="/admin/edit/:task_id">
+        <Route path="/Admin/:user_id/edit/:task_id">
           <AdminEdit userData={userData}/>
         </Route>
-        <Route exact path="/admin/newtask">
+        <Route exact path="/Admin/:user_id/newtask">
           <AdminNewTask userData={userData} />
         </Route>
-        <Route path="/student" userData={userData}>
-          <StudentHome />
+        <Route path="/student/:user_id">
+          <StudentHome userData={userData}/>
         </Route>
-        <Route path="/volunteer" userData={userData}>
-          <VolunteerHome />
+        <Route path="/volunteer/:user_id" >
+          <VolunteerHome userData={userData}/>
         </Route>
         <Route exact path="/">
           <Home />
