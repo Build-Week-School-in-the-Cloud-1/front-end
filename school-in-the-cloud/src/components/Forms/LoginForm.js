@@ -7,7 +7,7 @@ import StudentHome from "../Profiles/StudentProfile";
 import VolunteerHome from "../Profiles/VolunteerProfile";
 
 const loginFormSchema = yup.object().shape({
-  username: yup.string().required("Username is required"),
+  email: yup.string().email(),
   password: yup
     .string()
     .required("Please enter your password")
@@ -19,7 +19,7 @@ const loginFormSchema = yup.object().shape({
 
 function Login(props) {
   const [loginFormData, setLoginFormData] = useState({
-    username: "",
+    email: "",
     password: "",
   });
 
@@ -27,21 +27,41 @@ function Login(props) {
 
   const history = useHistory();
 
-  const testData = { role: "admin", name: "Borat" };
+  const testData = {
+    role: "admin",
+    user_id: 8,
+    fname: "Test",
+    tasks: [
+      {
+        id: "1",
+        task_name: "Sample task 1",
+        task_description: "Sample description 1",
+        completion: "false",
+        assignee: "Sample person 1",
+      },
+      {
+        id: "2",
+        task_name: "Sample task 2",
+        task_description: "Sample description 2",
+        completion: "true",
+        assignee: "Sample person 2",
+      },
+    ],
+  };
 
   function submitHandler(e) {
     e.preventDefault();
     axios
-      .post("https://reqres.in/api/users", testData)
+      .post(
+        "https://school-in-the-cloud-bwpt15.herokuapp.com/api/auth/login",
+        loginFormData
+      )
       .then((res) => {
         console.log(res);
-
-        setTimeout(() => {
-          history.push(`/${res.data.role}`);
-        }, 1000);
+        history.push(`/${res.data.user.role}/${res.data.user.id}`);
 
         setLoginFormData({
-          username: "",
+          email: "",
           password: "",
         });
       })
@@ -68,13 +88,13 @@ function Login(props) {
   return (
     <div>
       <form onSubmit={submitHandler} name="LoginForm" className="form">
-        <label htmlFor="username" className="username">
+        <label htmlFor="email" className="email">
           <input
-            type="text"
-            name="username"
-            value={loginFormData.username}
+            type="email"
+            name="email"
+            value={loginFormData.email}
             onChange={changeHandler}
-            placeholder="Enter username"
+            placeholder="Enter email"
             autocomplete="off"
           />
         </label>

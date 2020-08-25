@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Link, NavLink } from "react-router-dom";
+import { Link, NavLink, useRouteMatch, Switch, useParams } from "react-router-dom";
 import deleteIcon from "../../assets/delete-icon.png";
 import editIcon from "../../assets/edit-icon.png";
 
@@ -8,17 +8,19 @@ function AdminHome(props) {
     return task.completion === "false";
   });
 
-  console.log(openTasks);
-
   const closedTasks = props.userData.tasks.filter((task) => {
     return task.completion === "true";
   });
+
+  const {url} = useRouteMatch();
+
+  const {user_id} = useParams();
 
   return (
     <div className="adminhome">
       <header className="header">
         <h1>Hello, {props.userData.fname} </h1>
-        <NavLink to="/admin/newtask">
+        <NavLink to={`${url}/newtask`}>
           <button className="newTaskButton">Create New Task</button>
         </NavLink>
       </header>
@@ -30,7 +32,7 @@ function AdminHome(props) {
               <div className="task">
                 <h2>{task.task_name}</h2>
                 <img src={deleteIcon} alt="delete icon" />
-                <Link to={`/admin/edit/${task.id}`}>
+                <Link to={`/admin/${user_id}/edit/${task.id}`}>
                   <img src={editIcon} alt="edit icon" />
                 </Link>
               </div>
