@@ -1,6 +1,8 @@
 import React, { useState, useEffect, Component } from "react";
-import { CountryDropdown } from "react-country-region-selector";
+//import { CountryDropdown } from "react-country-region-selector";
 import { useHistory } from "react-router-dom";
+import { connect } from "react-redux";
+import { signupPost } from "../../actions/signupActions";
 import countryList from "./countryList";
 import axios from "axios";
 import * as yup from "yup";
@@ -38,29 +40,7 @@ function SignUp(props) {
 
   function submitHandler(e) {
     e.preventDefault();
-    axios
-      .post(
-        "https://school-in-the-cloud-bwpt15.herokuapp.com/api/auth/register",
-        signUpFormData
-      )
-      .then((res) => {
-        setTimeout(()=>{
-            history.push('/login')
-        })
-        
-        setSignUpFormData({
-          fname: "",
-          lname: "",
-          email: "",
-          username: "",
-          password: "",
-          country: "",
-          role: "",
-        });
-      })
-      .catch((error) => {
-        alert(error.message);
-      });
+    props.signupPost("register", signUpFormData);
   }
 
  
@@ -161,4 +141,12 @@ function SignUp(props) {
   );
 }
 
-export default SignUp;
+const mapStateToProps = state =>{
+  return{
+    token: state.token,
+    isPosting: state.isPosting,
+    error: state.error
+  };
+};
+
+export default connect(mapStateToProps, {signupPost})(SignUp);
