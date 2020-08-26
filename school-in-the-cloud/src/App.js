@@ -8,6 +8,7 @@ import AdminEdit from "./components/Profiles/AdminEditTask";
 import AdminNewTask from "./components/Profiles/AdminNewTask";
 import StudentHome from "./components/Profiles/StudentProfile";
 import VolunteerHome from "./components/Profiles/VolunteerProfile";
+import VolunteerTaskComplete from "./components/Profiles/VolunteerTaskComplete"
 import Home from "./components/Home";
 
 // sample userData to be stored to Global props (Redux???) after successfull login in Login page
@@ -40,8 +41,11 @@ function App() {
         <Route path="/student/:user_id">
           <StudentHome userData={userData}/>
         </Route>
-        <Route path="/volunteer/:user_id" >
+        <Route exact path="/volunteer/:user_id" >
           <VolunteerHome userData={userData}/>
+        </Route>
+        <Route path="/volunteer/:user_id/complete/:task_id" >
+          <VolunteerTaskComplete userData={userData}/>
         </Route>
         <Route exact path="/">
           <Home />

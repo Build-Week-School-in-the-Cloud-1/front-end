@@ -13,6 +13,7 @@ export default {
       task_description: "Sample description 1",
       completion: "false",
       assignee: "Sample person 1",
+      assignedBy:"Sample Admin 11",
     },
     {
       id: "2",
@@ -20,6 +21,7 @@ export default {
       task_description: "Sample description 2",
       completion: "true",
       assignee: "Sample person 2",
+      assignedBy:"Sample Admin 15",
     },
     {
       id: "3",
@@ -27,6 +29,7 @@ export default {
       task_description: "Sample description 3",
       completion: "false",
       assignee: "Sample person 3",
+      assignedBy:"Sample Admin 101",
     },
     {
       id: "4",
@@ -34,6 +37,7 @@ export default {
       task_description: "Sample description 4",
       completion: "true",
       assignee: "Sample person 4",
+      assignedBy:"Sample Admin 118",
     },
     {
       id: "8",
@@ -41,6 +45,7 @@ export default {
       task_description: "Sample description 10",
       completion: "false",
       assignee: "Sample person 5",
+      assignedBy:"Sample Admin 98",
     },
     {
       id: "12",
@@ -48,6 +53,7 @@ export default {
       task_description: "Sample description 12",
       completion: "true",
       assignee: "Sample person 6",
+      assignedBy:"Sample Admin 21",
     },
     {
       id: "31",
@@ -55,6 +61,7 @@ export default {
       task_description: "Sample description 31",
       completion: "false",
       assignee: "Sample person 8",
+      assignedBy:"Sample Admin 1",
     },
     {
       id: "42",
@@ -62,6 +69,7 @@ export default {
       task_description: "Sample description 42",
       completion: "true",
       assignee: "Sample person 7",
+      assignedBy:"Sample Admin 17",
     },
   ],
 };
