@@ -197,3 +197,21 @@ button:disabled {
 .textarea {
   height: 250px;
 }
+
+.buttons-home{
+  margin: 0% 5%;
+}
+
+.homepage{
+  align-items: center;
+  margin: 2% 20%;
+}
+
+.buttons-home > a {
+  margin-left: 20px;
+}
+
+.homepage > h1 {
+  margin-left: 10%;
+}
+

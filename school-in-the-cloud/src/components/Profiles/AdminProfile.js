@@ -1,7 +1,15 @@
 import React, { useState, useEffect } from "react";
-import { Link, NavLink, useRouteMatch, Switch, useParams } from "react-router-dom";
+import {
+  Link,
+  NavLink,
+  useRouteMatch,
+  Switch,
+  useParams,
+  useHistory,
+} from "react-router-dom";
 import deleteIcon from "../../assets/delete-icon.png";
 import editIcon from "../../assets/edit-icon.png";
+import axios from "axios";
 
 function AdminHome(props) {
   const openTasks = props.userData.tasks.filter((task) => {
@@ -12,9 +20,29 @@ function AdminHome(props) {
     return task.completion === "true";
   });
 
-  const {url} = useRouteMatch();
+  const { url } = useRouteMatch();
 
-  const {user_id} = useParams();
+  const { user_id } = useParams();
+
+  const history = useHistory();
+
+  function deleteTask(e) {
+    e.preventDefault();
+    console.log(e.target);
+
+    const taskId = e.target.alt;
+
+    axios
+      .delete(
+        `https://school-in-the-cloud-bwpt15.herokuapp.com/api/tasks/${taskId}`
+      )
+      .then((res) => {
+        // re-render Admin page with updated user data.
+        //Deleted task shouldn't be in the tasks array
+        history.push(`/admin/${user_id}`);
+      })
+      .catch((error) => alert(error.response.data.message));
+  }
 
   return (
     <div className="adminhome">
@@ -31,7 +59,11 @@ function AdminHome(props) {
             return (
               <div className="task">
                 <h2>{task.task_name}</h2>
-                <img src={deleteIcon} alt="delete icon" />
+                <img
+                  src={deleteIcon}
+                  alt={task.id}
+                  onClick={deleteTask}
+                />
                 <Link to={`/admin/${user_id}/edit/${task.id}`}>
                   <img src={editIcon} alt="edit icon" />
                 </Link>
@@ -46,7 +78,12 @@ function AdminHome(props) {
             return (
               <div className="task">
                 <h2>{task.task_name}</h2>
-                <img src={deleteIcon} alt="delete-icon" />
+                <img
+                  src={deleteIcon}
+                  alt={task.id}
+                  onClick={deleteTask}
+                //   value={task.id}
+                />
               </div>
             );
           })}
