@@ -12,12 +12,14 @@ import editIcon from "../../assets/edit-icon.png";
 import axios from "axios";
 
 function AdminHome(props) {
-  const openTasks = props.userData.tasks.filter((task) => {
-    return task.completion === "false";
+
+  
+  const openTasks = props.tasksData.filter((task) => {
+    return task.completion === false;
   });
 
-  const closedTasks = props.userData.tasks.filter((task) => {
-    return task.completion === "true";
+  const closedTasks = props.tasksData.filter((task) => {
+    return task.completion === true;
   });
 
   const { url } = useRouteMatch();
@@ -25,6 +27,21 @@ function AdminHome(props) {
   const { user_id } = useParams();
 
   const history = useHistory();
+
+  useEffect(() => {
+    console.log(props);
+
+    axios
+      .get("https://school-in-the-cloud-bwpt15.herokuapp.com/api/tasks")
+      .then((res) => {
+        props.setTasksData(res.data);
+      })
+      .catch((err) => {
+        alert(err);
+      });
+
+    
+  }, []);
 
   function deleteTask(e) {
     e.preventDefault();
@@ -37,8 +54,7 @@ function AdminHome(props) {
         `https://school-in-the-cloud-bwpt15.herokuapp.com/api/tasks/${taskId}`
       )
       .then((res) => {
-        // re-render Admin page with updated user data.
-        //Deleted task shouldn't be in the tasks array
+        console.log(res.data);
         history.push(`/admin/${user_id}`);
       })
       .catch((error) => alert(error.response.data.message));
@@ -46,8 +62,12 @@ function AdminHome(props) {
 
   return (
     <div className="adminhome">
-      <header className="header">
-        <h1>Hello, {props.userData.fname} </h1>
+      <header className="header-admin">
+        <h1>
+          Hello, {props.usersData.user.fname} {props.usersData.user.lname}
+        </h1>
+        <h3>Bio: {props.usersData.user.bio} </h3>
+        <h3>Location: {props.usersData.user.country} </h3>
         <NavLink to={`${url}/newtask`}>
           <button className="newTaskButton">Create New Task</button>
         </NavLink>
@@ -59,11 +79,7 @@ function AdminHome(props) {
             return (
               <div className="task">
                 <h2>{task.task_name}</h2>
-                <img
-                  src={deleteIcon}
-                  alt={task.id}
-                  onClick={deleteTask}
-                />
+                <img src={deleteIcon} alt={task.id} onClick={deleteTask} />
                 <Link to={`/admin/${user_id}/edit/${task.id}`}>
                   <img src={editIcon} alt="edit icon" />
                 </Link>
@@ -82,7 +98,7 @@ function AdminHome(props) {
                   src={deleteIcon}
                   alt={task.id}
                   onClick={deleteTask}
-                //   value={task.id}
+                  //   value={task.id}
                 />
               </div>
             );

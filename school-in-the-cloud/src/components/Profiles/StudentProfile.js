@@ -30,17 +30,17 @@ function StudentHome(props) {
   const testSearchResponseData = [
     {
       name: "Sample Teacher 5",
-      location: "Antigua Barbuda",
+      location: "Albania",
       id: 109,
     },
     {
       name: "Sample Teacher 7",
-      location: "Greenland",
+      location: "Albania",
       id: 7,
     },
     {
       name: "Sample Teacher 71",
-      location: "USA",
+      location: "Albania",
       id: 71,
     },
   ];
@@ -118,7 +118,6 @@ function StudentHome(props) {
             <button>Find</button>
           </form>
 
-          
 
         </section>
 
@@ -126,7 +125,7 @@ function StudentHome(props) {
           <Route exact path={`/student/${user_id}`}>
             <StudentMyTeacher userData={props.userData} />
           </Route>
-          <Route exact path path={`/student/${user_id}/results`}>
+          <Route exact path ={`/student/${user_id}/results`}>
             <StudentResults searchResponseData={searchResponseData} />
           </Route>
         </Switch>

@@ -27,28 +27,6 @@ function Login(props) {
 
   const history = useHistory();
 
-  const testData = {
-    role: "admin",
-    user_id: 8,
-    fname: "Test",
-    tasks: [
-      {
-        id: "1",
-        task_name: "Sample task 1",
-        task_description: "Sample description 1",
-        completion: "false",
-        assignee: "Sample person 1",
-      },
-      {
-        id: "2",
-        task_name: "Sample task 2",
-        task_description: "Sample description 2",
-        completion: "true",
-        assignee: "Sample person 2",
-      },
-    ],
-  };
-
   function submitHandler(e) {
     e.preventDefault();
     axios
@@ -57,7 +35,8 @@ function Login(props) {
         loginFormData
       )
       .then((res) => {
-        console.log(res);
+        props.setUsersData(res.data);
+
         history.push(`/${res.data.user.role}/${res.data.user.id}`);
 
         setLoginFormData({
@@ -66,7 +45,7 @@ function Login(props) {
         });
       })
       .catch((error) => {
-        alert(error.message);
+        alert(error);
       });
   }
 

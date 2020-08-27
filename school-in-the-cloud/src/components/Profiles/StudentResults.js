@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useHistory, Route, Switch, useParams } from "react-router-dom";
 
 function StudentResults(props){
-    console.log(props.searchResponseData.map)
+    
     return(
         <section className="results">
           

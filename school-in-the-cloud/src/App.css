@@ -1,5 +1,6 @@
 .App {
   text-align: center;
+  
 }
 
 .App-logo {
@@ -160,6 +161,14 @@ button:disabled {
     margin: 0% 2% 2% 1%;
 }
 
+.header-volunteer, .header-admin{
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: auto;
+  margin: 0% 2% 2% 1%;
+}
+
 .tasks, .studentHomeComponents{
     display: flex;
     border: 2px solid black;
@@ -200,18 +209,36 @@ button:disabled {
 
 .buttons-home{
   margin: 0% 5%;
+  width: 50%
 }
 
 .homepage{
   align-items: center;
-  margin: 2% 20%;
+  
 }
 
 .buttons-home > a {
-  margin-left: 20px;
+  margin-left: 10px;
 }
 
 .homepage > h1 {
   margin-left: 10%;
 }
+
+iframe{
+  border-radius: 20px;
+ 
+}
+
+.button{
+  font-size: 0.8rem;
+  width:40%;
+}
+
+h4{
+  font-size: 1.2rem;
+  display: inherit;
+}
+
+
 

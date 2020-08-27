@@ -7,21 +7,19 @@ import * as yup from "yup";
 
 function AdminNewTask(props) {
   const { user_id } = useParams();
+  
   const history = useHistory();
 
   const [newTaskFormData, setNewTaskFormData] = useState({
     task_name: "",
     task_description: "",
-    assignee: "",
-    userId: "",
-    completion: "false",
+    completion: false,
   });
 
   function changeHandler(e) {
     const newNewTaskFormData = {
       ...newTaskFormData,
       [e.target.name]: e.target.value,
-      userId: user_id,
     };
 
     setNewTaskFormData(newNewTaskFormData);
@@ -43,15 +41,23 @@ function AdminNewTask(props) {
         newTaskFormData
       )
       .then((res) => {
-        //update gloabl userData object and go back to Admin home
-        // this should re-render Admin home with the newest task list
-        history.push(`/admin/${user_id}`);
-      })
-      .catch((error) => {
-        alert(error.response.data.message);
-      });
-  }
+        console.log(res);
+        const newAssigneeData = { user_id: user_id, task_id: res.data.id };
 
+        axios
+          .post(
+            `https://school-in-the-cloud-bwpt15.herokuapp.com/api/admin`,
+            newAssigneeData
+          )
+          .then((res) => console.log(res))
+          .catch((err) => {
+            alert("Asignment failed");
+          });
+
+        history.goBack();
+      })
+      .catch((err) => alert("Task creation failed"));
+  }
   return (
     <form action="" onSubmit={submitHandler}>
       <label htmlFor="task_name">
@@ -67,7 +73,7 @@ function AdminNewTask(props) {
           type="text"
           name="assignee"
           placeholder="Enter assignee here"
-          onChange={changeHandler}
+          // onChange={changeHandler}
         />
       </label>
       <label htmlFor="task_description">
