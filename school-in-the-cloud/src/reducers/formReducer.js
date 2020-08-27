@@ -2,15 +2,18 @@ import {
     POST_START,
     POST_SUCCESS,
     POST_FAIL
-} from "../actions/signupActions";
+} from "../actions/formActions";
 
 const initialState = {
-        token: "",
+        userData: {
+            token: "",
+            user: {}
+        },
         isPosting: false,
         error: ""
 };
 
-const signupReducer = (state = initialState, action) => {
+const formReducer = (state = initialState, action) => {
     switch(action.type){
         case POST_START:
             return{
@@ -21,7 +24,10 @@ const signupReducer = (state = initialState, action) => {
             return{
                 ...state,
                 isPosting: false,
-                token: action.payload
+                userData: {
+                    token: action.payload.token,
+                    user: action.payload.user
+                }
             }
         case POST_FAIL:
             return{
@@ -33,3 +39,5 @@ const signupReducer = (state = initialState, action) => {
             return state;
     };
 };
+
+export default formReducer;

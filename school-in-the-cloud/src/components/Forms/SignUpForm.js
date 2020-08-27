@@ -2,9 +2,8 @@ import React, { useState, useEffect, Component } from "react";
 //import { CountryDropdown } from "react-country-region-selector";
 import { useHistory } from "react-router-dom";
 import { connect } from "react-redux";
-import { signupPost } from "../../actions/signupActions";
+import { formPost } from "../../actions/formActions";
 import countryList from "./countryList";
-import axios from "axios";
 import * as yup from "yup";
 
 const signUpFormSchema = yup.object().shape({
@@ -34,13 +33,14 @@ function SignUp(props) {
     role: "",
   });
 
-  const [buttonDisabled, setButtonDisabled] = useState("true");
+  const [buttonDisabled, setButtonDisabled] = useState(true);
 
   const history = useHistory();
 
   function submitHandler(e) {
     e.preventDefault();
-    props.signupPost("register", signUpFormData);
+    props.formPost("register", signUpFormData);
+    window.localStorage.setItem("token", props.userData.token);
   }
 
  
@@ -126,7 +126,7 @@ function SignUp(props) {
       <br />
       <select
         name="country"
-        id="country"
+        className="country"
         onChange={changeHandler}
         value={signUpFormData.country}
       >
@@ -143,10 +143,10 @@ function SignUp(props) {
 
 const mapStateToProps = state =>{
   return{
-    token: state.token,
+    userData: state.userData,
     isPosting: state.isPosting,
     error: state.error
   };
 };
 
-export default connect(mapStateToProps, {signupPost})(SignUp);
+export default connect(mapStateToProps, {formPost})(SignUp);

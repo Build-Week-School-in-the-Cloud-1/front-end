@@ -1,13 +1,15 @@
 import React, { useState, useEffect } from "react";
 import { useHistory, Switch, Route } from "react-router-dom";
 import * as yup from "yup";
+import { connect } from "react-redux";
+import { formPost } from "../../actions/formActions";
 import axios from "axios";
 import AdminHome from "../Profiles/AdminProfile";
 import StudentHome from "../Profiles/StudentProfile";
 import VolunteerHome from "../Profiles/VolunteerProfile";
 
 const loginFormSchema = yup.object().shape({
-  username: yup.string().required("Username is required"),
+  email: yup.string().email(),
   password: yup
     .string()
     .required("Please enter your password")
@@ -19,35 +21,59 @@ const loginFormSchema = yup.object().shape({
 
 function Login(props) {
   const [loginFormData, setLoginFormData] = useState({
-    username: "",
+    email: "",
     password: "",
   });
 
-  const [buttonDisabled, setButtonDisabled] = useState("true");
+  const [buttonDisabled, setButtonDisabled] = useState(true);
 
   const history = useHistory();
 
-  const testData = { role: "admin", name: "Borat" };
+  const testData = {
+    role: "admin",
+    user_id: 8,
+    fname: "Test",
+    tasks: [
+      {
+        id: "1",
+        task_name: "Sample task 1",
+        task_description: "Sample description 1",
+        completion: "false",
+        assignee: "Sample person 1",
+      },
+      {
+        id: "2",
+        task_name: "Sample task 2",
+        task_description: "Sample description 2",
+        completion: "true",
+        assignee: "Sample person 2",
+      },
+    ],
+  };
 
   function submitHandler(e) {
     e.preventDefault();
-    axios
-      .post("https://reqres.in/api/users", testData)
-      .then((res) => {
-        console.log(res);
+    // axios
+    //   .post(
+    //     "https://school-in-the-cloud-bwpt15.herokuapp.com/api/auth/login",
+    //     loginFormData
+    //   )
+    //   .then((res) => {
+    //     console.log(res);
+    //     history.push(`/${res.data.user.role}/${res.data.user.id}`);
 
-        setTimeout(() => {
-          history.push(`/${res.data.role}`);
-        }, 1000);
+    //     setLoginFormData({
+    //       email: "",
+    //       password: "",
+    //     });
+    //   })
+    //   .catch((error) => {
+    //     alert(error.message);
+    //   });
 
-        setLoginFormData({
-          username: "",
-          password: "",
-        });
-      })
-      .catch((error) => {
-        alert(error.message);
-      });
+    props.formPost("login", loginFormData);
+    console.log(props.userData);
+    window.localStorage.setItem("token", props.userData.token);
   }
 
   function changeHandler(e) {
@@ -68,14 +94,14 @@ function Login(props) {
   return (
     <div>
       <form onSubmit={submitHandler} name="LoginForm" className="form">
-        <label htmlFor="username" className="username">
+        <label htmlFor="email" className="email">
           <input
-            type="text"
-            name="username"
-            value={loginFormData.username}
+            type="email"
+            name="email"
+            value={loginFormData.email}
             onChange={changeHandler}
-            placeholder="Enter username"
-            autocomplete="off"
+            placeholder="Enter email"
+            autoComplete="off"
           />
         </label>
         <label htmlFor="password" className="password">
@@ -93,4 +119,12 @@ function Login(props) {
   );
 }
 
-export default Login;
+const mapStateToProps = state =>{
+  return{
+    userData: state.userData,
+    isPosting: state.isPosting,
+    error: state.error
+  };
+};
+
+export default connect(mapStateToProps, {formPost})(Login);

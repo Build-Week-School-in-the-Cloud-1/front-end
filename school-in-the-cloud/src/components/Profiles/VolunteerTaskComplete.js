@@ -1,18 +1,17 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useHistory, useParams } from "react-router-dom";
-import * as yup from "yup";
 import axios from "axios";
 
-function AdminEdit(props) {
-  const { user_id,task_id } = useParams();
+function VolunteerTaskComplete(props) {
+  const { task_id } = useParams();
 
-  const editTask = props.userData.tasks.find((task) => task.id == task_id);
+  const completeTask = props.userData.tasks.find((task) => task.id == task_id);
 
-  const [editTaskForm, setEditTaskForm] = useState({
-    id: editTask.id,
-    task_name: editTask.task_name,
-    task_description: editTask.task_description,
-    assignee: editTask.assignee,
+  const [completeTaskForm, setCompleteTaskForm] = useState({
+    id: completeTask.id,
+    task_name: completeTask.task_name,
+    task_description: completeTask.task_description,
+    assignedBy: completeTask.assignedBy,
     completion: "false",
   });
 
@@ -23,21 +22,21 @@ function AdminEdit(props) {
     axios
       .put(
         `https://school-in-the-cloud-bwpt15.herokuapp.com/api/auth/${task_id}`,
-        editTaskForm
+        completeTask
       )
       .then((res) => {
         // we should update the global UserData and go back to Admin home
         // Admin home will re-render tasks with new data
-        history.push(`/admin/${user_id}`);
+        history.goBack();
       });
   }
 
   function changeHandler(e) {
-    const newEditTaskFormData = {
-      ...editTaskForm,
-      [e.target.name]: [e.target.value],
+    const newCompleteTaskFormData = {
+      ...completeTaskForm,
+      completion: "true",
     };
-    setEditTaskForm(newEditTaskFormData);
+    setCompleteTaskForm(newCompleteTaskFormData);
   }
 
   return (
@@ -46,29 +45,29 @@ function AdminEdit(props) {
         <input
           type="text"
           name="task_name"
-          value={editTaskForm.task_name}
-          onChange={changeHandler}
+          value={completeTaskForm.task_name}
+          //   onChange={changeHandler}
         />
       </label>
       <label htmlFor="task_assignee">
         <input
           type="text"
           name="assignee"
-          value={editTaskForm.assignee}
-          onChange={changeHandler}
+          value={completeTaskForm.assignedBy}
+          //   onChange={changeHandler}
         />
       </label>
       <label htmlFor="task_description">
         <textarea
           className="textarea"
           name="task_description"
-          value={editTaskForm.task_description}
-          onChange={changeHandler}
+          value={completeTaskForm.task_description}
+          //   onChange={changeHandler}
         />
       </label>
-      <button>Submit</button>
+      <button onClick={changeHandler}>Complete Task</button>
     </form>
   );
 }
 
-export default AdminEdit;
+export default VolunteerTaskComplete;
