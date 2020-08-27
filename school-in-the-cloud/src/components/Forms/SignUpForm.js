@@ -1,5 +1,4 @@
 import React, { useState, useEffect, Component } from "react";
-import { CountryDropdown } from "react-country-region-selector";
 import { useHistory } from "react-router-dom";
 import countryList from "./countryList";
 import axios from "axios";
@@ -22,6 +21,9 @@ const signUpFormSchema = yup.object().shape({
 });
 
 function SignUp(props) {
+
+  //console.log(props);
+
   const [signUpFormData, setSignUpFormData] = useState({
     fname: "",
     lname: "",
@@ -30,25 +32,27 @@ function SignUp(props) {
     password: "",
     country: "",
     role: "",
+    bio: "",
   });
 
-  const [buttonDisabled, setButtonDisabled] = useState("true");
+  const [buttonDisabled, setButtonDisabled] = useState(true);
 
   const history = useHistory();
 
   function submitHandler(e) {
     e.preventDefault();
+
     axios
       .post(
         "https://school-in-the-cloud-bwpt15.herokuapp.com/api/auth/register",
         signUpFormData
       )
       .then((res) => {
-          
+
         console.log(res);
-        history.push(`/${res.data.added[0].role}/${res.data.added[0].id}`);
         
-        
+        props.setUsersData(res.data);
+
         setSignUpFormData({
           fname: "",
           lname: "",
@@ -57,14 +61,18 @@ function SignUp(props) {
           password: "",
           country: "",
           role: "",
+          bio: "",
         });
+
+        history.push(`/${res.data.user.role}/${res.data.user.id}`);
+        // history.push(`/login`);
+
+        
       })
       .catch((error) => {
-        alert(error.message);
+        alert(error);
       });
   }
-
- 
 
   function changeHandler(e) {
     const newFormData = {
@@ -156,6 +164,15 @@ function SignUp(props) {
           return <option value={country.name}>{country.name}</option>;
         })}
       </select>
+      <textarea
+        name="bio"
+        value={signUpFormData.bio}
+        id=""
+        cols="30"
+        rows="10"
+        placeholder="Enter your bio here"
+        onChange={changeHandler}
+      />
       <br />
       <button disabled={buttonDisabled}>Sign Up</button>
     </form>

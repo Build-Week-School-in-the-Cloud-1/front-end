@@ -1,5 +1,6 @@
 .App {
   text-align: center;
+  
 }
 
 .App-logo {
@@ -160,6 +161,14 @@ button:disabled {
     margin: 0% 2% 2% 1%;
 }
 
+.header-volunteer, .header-admin{
+  display: flex;
+  justify-content: center;
+  width: 80%;
+  height: auto;
+  margin: 0% 2% 2% 1%;
+}
+
 .tasks, .studentHomeComponents{
     display: flex;
     border: 2px solid black;
@@ -187,7 +196,7 @@ button:disabled {
   margin: 1% auto;
 }
 
-.newTaskButton{
+.newTaskButton, a > .logout{
   width: 80px;
   height: 40px;
   font-size: 0.9rem;
@@ -200,18 +209,78 @@ button:disabled {
 
 .buttons-home{
   margin: 0% 5%;
+  width: 50%
 }
 
 .homepage{
   align-items: center;
-  margin: 2% 20%;
+  
 }
 
 .buttons-home > a {
-  margin-left: 20px;
+  margin-left: 10px;
 }
 
 .homepage > h1 {
   margin-left: 10%;
 }
+
+iframe{
+  border-radius: 20px;
+ 
+}
+
+.button{
+  font-size: 0.8rem;
+  width:40%;
+}
+
+h4{
+  font-size: 1.2rem;
+  display: inherit;
+}
+
+.footer{
+    color: white;
+    font-size: 1.2rem;
+    font-weight: bold;
+}
+
+.content{
+  height:25%;
+}
+
+.middle-content {
+  margin: 5% 0% 3%;
+}
+
+.teacher{
+  background-color: rgba(247, 225, 225, 0.5);
+  border-radius: 20px;
+}
+
+img{
+  border-radius: 50px;
+  margin:1% auto;
+}
+
+.header-content{
+  display: flex;
+  flex-direction: column;
+}
+
+.buttons{
+  display: flex;
+  align-items: center;
+}
+
+.buttons > a {
+  margin-left: 80%;
+}
+
+.studenthome a {
+  margin-bottom: 5%;
+}
+
+
 
