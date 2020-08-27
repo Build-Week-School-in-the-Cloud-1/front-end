@@ -1,10 +1,8 @@
 import React, { useState, useEffect } from "react";
-import { useHistory, Switch, Route } from "react-router-dom";
+import { useHistory} from "react-router-dom";
 import * as yup from "yup";
 import axios from "axios";
-import AdminHome from "../Profiles/AdminProfile";
-import StudentHome from "../Profiles/StudentProfile";
-import VolunteerHome from "../Profiles/VolunteerProfile";
+
 
 const loginFormSchema = yup.object().shape({
   email: yup.string().email(),
@@ -35,6 +33,7 @@ function Login(props) {
         loginFormData
       )
       .then((res) => {
+        console.log(res)
         props.setUsersData(res.data);
 
         history.push(`/${res.data.user.role}/${res.data.user.id}`);

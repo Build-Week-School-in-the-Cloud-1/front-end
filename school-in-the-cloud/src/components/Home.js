@@ -1,6 +1,5 @@
-import React, { useState, useEffect } from "react";
-import { useHistory, NavLink } from "react-router-dom";
-
+import React from "react";
+import {  NavLink} from "react-router-dom";
 function Home(props) {
   return (
     <div className="home">
@@ -23,7 +22,29 @@ function Home(props) {
         allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
         allowfullscreen
       ></iframe>
-    
+      <div className="content">
+        <section className="middle-content">
+          <h2>Our Mission</h2>
+          <h3>
+            Our mission is to prepare them so that they can support those who
+            need it in the best possible way.
+          </h3>
+        </section>
+        <section className="bottom-content">
+          <h3>
+            <p>We prepare and teach students to reach their goals</p>
+            <a
+              href="https://schoolinthecloud-welcome.netlify.app/"
+              target="_blank"
+            >
+              Learn More About US
+            </a>
+          </h3>
+        </section>
+      </div>
+      <footer className="footer">
+        <p>Made with ❤️ © 2020 School in the Cloud in 🇺🇸</p>
+      </footer>
     </div>
   );
 }

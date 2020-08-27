@@ -163,8 +163,8 @@ button:disabled {
 
 .header-volunteer, .header-admin{
   display: flex;
-  flex-direction: column;
-  width: 100%;
+  justify-content: center;
+  width: 80%;
   height: auto;
   margin: 0% 2% 2% 1%;
 }
@@ -196,7 +196,7 @@ button:disabled {
   margin: 1% auto;
 }
 
-.newTaskButton{
+.newTaskButton, a > .logout{
   width: 80px;
   height: 40px;
   font-size: 0.9rem;
@@ -238,6 +238,48 @@ iframe{
 h4{
   font-size: 1.2rem;
   display: inherit;
+}
+
+.footer{
+    color: white;
+    font-size: 1.2rem;
+    font-weight: bold;
+}
+
+.content{
+  height:25%;
+}
+
+.middle-content {
+  margin: 5% 0% 3%;
+}
+
+.teacher{
+  background-color: rgba(247, 225, 225, 0.5);
+  border-radius: 20px;
+}
+
+img{
+  border-radius: 50px;
+  margin:1% auto;
+}
+
+.header-content{
+  display: flex;
+  flex-direction: column;
+}
+
+.buttons{
+  display: flex;
+  align-items: center;
+}
+
+.buttons > a {
+  margin-left: 80%;
+}
+
+.studenthome a {
+  margin-bottom: 5%;
 }
 
 

@@ -1,16 +1,16 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import {
   useHistory,
   Route,
   Switch,
   useParams,
-  useRouteMatch,
-  Link,
+  NavLink
 } from "react-router-dom";
 import countryList from "../Forms/countryList";
 import StudentMyTeacher from "./StudentMyTeacher";
 import StudentResults from "./StudentResults";
 import axios from "axios";
+import LogOutButton from "./LogOutButton";
 
 function StudentHome(props) {
   const { user_id } = useParams();
@@ -25,37 +25,28 @@ function StudentHome(props) {
     subject: "",
   });
 
-  const [searchResponseData, setSearchResponseData] = useState([]);
+  const [studentSearchResponse, setStudentSearchResponse] = useState([{
+    id: "",
+    fname: "",
+    lname: "",
+    email: "",
+    username: "",
+    password: "",
+    country: "",
+    role: "",
+    bio: "",
+    volunteer_time: "",
+    student_time: "",
+  }])
 
-  const testSearchResponseData = [
-    {
-      name: "Sample Teacher 5",
-      location: "Albania",
-      id: 109,
-    },
-    {
-      name: "Sample Teacher 7",
-      location: "Albania",
-      id: 7,
-    },
-    {
-      name: "Sample Teacher 71",
-      location: "Albania",
-      id: 71,
-    },
-  ];
 
   function submitHandler(e) {
     e.preventDefault();
     axios
-      .post("https://reqres.in/api/users", testSearchResponseData)
+      .get("https://school-in-the-cloud-bwpt15.herokuapp.com/api/admin/users")
       .then((res) => {
-        console.log(`Hello`);
-        setSearchResponseData(res.data);
-        setTimeout(() => {
-          history.push(`${url}/results`);
-        }, 500);
-        
+        setStudentSearchResponse(res.data);
+        history.push(`${url}/results`);
       })
       .catch((err) => {
         alert(err);
@@ -63,6 +54,7 @@ function StudentHome(props) {
   }
 
   
+
 
   function changeHandler(e) {
     const newSearchData = {
@@ -74,8 +66,20 @@ function StudentHome(props) {
 
   return (
     <div className="studenthome">
-      <header className="header">
-        <h1>Hello, {props.userData.fname}</h1>
+      <header className="header-student">
+      <div classname="header-content">
+          <h1>
+            Hello, {props.usersData.user.fname} {props.usersData.user.lname}
+          </h1>
+          <h3>Bio: {props.usersData.user.bio} </h3>
+          <h3>Location: {props.usersData.user.country} </h3>
+        </div>
+
+        <div className="buttons">
+          <NavLink to="/">
+            <LogOutButton userToken={props.usersData.token} />
+          </NavLink>
+        </div>
       </header>
       <div className="studentHomeComponents">
         <section className="search">
@@ -90,7 +94,11 @@ function StudentHome(props) {
               >
                 <option value="">Country</option>
                 {countryList.map((country, index) => {
-                  return <option value={country.name} key={country.code}>{country.name}</option>;
+                  return (
+                    <option value={country.name} key={country.code}>
+                      {country.name}
+                    </option>
+                  );
                 })}
               </select>
             </label>
@@ -117,16 +125,14 @@ function StudentHome(props) {
             </label>
             <button>Find</button>
           </form>
-
-
         </section>
 
         <Switch>
           <Route exact path={`/student/${user_id}`}>
-            <StudentMyTeacher userData={props.userData} />
+            <StudentMyTeacher teachersData={props.teachersData} />
           </Route>
-          <Route exact path ={`/student/${user_id}/results`}>
-            <StudentResults searchResponseData={searchResponseData} />
+          <Route exact path={`/student/${user_id}/results`}>
+            <StudentResults studentSearchData={studentSearchData} studentSearchResponse ={studentSearchResponse} />
           </Route>
         </Switch>
       </div>

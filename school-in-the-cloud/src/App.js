@@ -104,7 +104,7 @@ function App() {
             setTasksAssignmentData={setTasksAssignmentData}
           />
         </Route>
-        <Route exact path="/">
+        <Route exact path="/" usersData={usersData}>
           <Home />
         </Route>
       </Switch>

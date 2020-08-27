@@ -1,19 +1,17 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import {
   Link,
   NavLink,
   useRouteMatch,
-  Switch,
   useParams,
   useHistory,
 } from "react-router-dom";
 import deleteIcon from "../../assets/delete-icon.png";
 import editIcon from "../../assets/edit-icon.png";
 import axios from "axios";
+import LogOutButton from "./LogOutButton";
 
 function AdminHome(props) {
-
-  
   const openTasks = props.tasksData.filter((task) => {
     return task.completion === false;
   });
@@ -29,8 +27,6 @@ function AdminHome(props) {
   const history = useHistory();
 
   useEffect(() => {
-    console.log(props);
-
     axios
       .get("https://school-in-the-cloud-bwpt15.herokuapp.com/api/tasks")
       .then((res) => {
@@ -39,8 +35,6 @@ function AdminHome(props) {
       .catch((err) => {
         alert(err);
       });
-
-    
   }, []);
 
   function deleteTask(e) {
@@ -54,23 +48,30 @@ function AdminHome(props) {
         `https://school-in-the-cloud-bwpt15.herokuapp.com/api/tasks/${taskId}`
       )
       .then((res) => {
-        console.log(res.data);
-        history.push(`/admin/${user_id}`);
+        history.go(0);
       })
-      .catch((error) => alert(error.response.data.message));
+      .catch((error) => alert(`couldn't delete :( `));
   }
 
   return (
     <div className="adminhome">
       <header className="header-admin">
-        <h1>
-          Hello, {props.usersData.user.fname} {props.usersData.user.lname}
-        </h1>
-        <h3>Bio: {props.usersData.user.bio} </h3>
-        <h3>Location: {props.usersData.user.country} </h3>
-        <NavLink to={`${url}/newtask`}>
-          <button className="newTaskButton">Create New Task</button>
-        </NavLink>
+        <div classname="header-content">
+          <h1>
+            Hello, {props.usersData.user.fname} {props.usersData.user.lname}
+          </h1>
+          <h3>Bio: {props.usersData.user.bio} </h3>
+          <h3>Location: {props.usersData.user.country} </h3>
+        </div>
+
+        <div className="buttons">
+          <NavLink to={`${url}/newtask`}>
+            <button className="newTaskButton">Create New Task</button>
+          </NavLink>
+          <NavLink to="/">
+            <LogOutButton userToken={props.usersData.token} />
+          </NavLink>
+        </div>
       </header>
       <div className="tasks">
         <section className="open">
@@ -94,12 +95,7 @@ function AdminHome(props) {
             return (
               <div className="task">
                 <h2>{task.task_name}</h2>
-                <img
-                  src={deleteIcon}
-                  alt={task.id}
-                  onClick={deleteTask}
-                  //   value={task.id}
-                />
+                <img src={deleteIcon} alt={task.id} onClick={deleteTask} />
               </div>
             );
           })}

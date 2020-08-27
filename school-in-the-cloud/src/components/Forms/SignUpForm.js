@@ -1,5 +1,4 @@
 import React, { useState, useEffect, Component } from "react";
-import { CountryDropdown } from "react-country-region-selector";
 import { useHistory } from "react-router-dom";
 import countryList from "./countryList";
 import axios from "axios";
@@ -52,7 +51,7 @@ function SignUp(props) {
 
         console.log(res);
         
-        //props.setUsersData(res.data);
+        props.setUsersData(res.data);
 
         setSignUpFormData({
           fname: "",
@@ -65,8 +64,8 @@ function SignUp(props) {
           bio: "",
         });
 
-        // history.push(`/${res.data.added[0].role}/${res.data.added[0].id}`);
-        history.push(`/login`);
+        history.push(`/${res.data.user.role}/${res.data.user.id}`);
+        // history.push(`/login`);
 
         
       })

@@ -43,7 +43,7 @@ function VolunteerTaskComplete(props) {
               (user) => user.id == adminUserID
             );
             console.log(matchingAdminData);
-            
+
             setAssignedBy({
               fname: matchingAdminData.fname,
               lname: matchingAdminData.fname,
@@ -85,7 +85,6 @@ function VolunteerTaskComplete(props) {
           type="text"
           name="task_name"
           value={completeTaskForm.task_name}
-          //   onChange={changeHandler}
         />
       </label>
       <label htmlFor="task_assignedBy">
@@ -93,8 +92,7 @@ function VolunteerTaskComplete(props) {
         <input
           type="text"
           name="assignedBy"
-          value={`${assignedBy.fname} ${assignedBy.lname}` }
-          //   onChange={changeHandler}
+          value={`${assignedBy.fname} ${assignedBy.lname}`}
         />
       </label>
       <label htmlFor="task_description">
@@ -102,7 +100,6 @@ function VolunteerTaskComplete(props) {
           className="textarea"
           name="task_description"
           value={completeTaskForm.task_description}
-          //   onChange={changeHandler}
         />
       </label>
       <button onClick={changeHandler}>Complete Task</button>

@@ -1,13 +1,12 @@
-import React, { useState, useEffect } from "react";
+import React, { useState} from "react";
 import { useHistory, useParams } from "react-router-dom";
 
 import axios from "axios";
 
-import * as yup from "yup";
 
 function AdminNewTask(props) {
   const { user_id } = useParams();
-  
+
   const history = useHistory();
 
   const [newTaskFormData, setNewTaskFormData] = useState({
@@ -24,14 +23,6 @@ function AdminNewTask(props) {
 
     setNewTaskFormData(newNewTaskFormData);
   }
-
-  // const testData = {
-  //   task_name: "Sample Task",
-  //   task_description: "Sample Tasks here",
-  //   assignee: "Sample person",
-  //   completion: "false",
-  //   userId:"10"
-  // };
 
   function submitHandler(e) {
     e.preventDefault();

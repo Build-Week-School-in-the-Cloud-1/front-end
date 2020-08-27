@@ -1,43 +1,77 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useHistory, useParams } from "react-router-dom";
-import * as yup from "yup";
 import axios from "axios";
+import AssignmentTaskData from "../AssignmentTaskData";
 
 function AdminEdit(props) {
-  const { user_id,task_id } = useParams();
+  console.log(props);
 
-  const editTask = props.userData.tasks.find((task) => task.id == task_id);
+  const { task_id } = useParams();
+
+  const editTask = props.tasksData.find((task) => task.id == task_id);
+  console.log(editTask.task_description);
 
   const [editTaskForm, setEditTaskForm] = useState({
-    id: editTask.id,
-    task_name: editTask.task_name,
-    task_description: editTask.task_description,
-    assignee: editTask.assignee,
-    completion: "false",
+    "task_name": `${editTask.task_name}`,
+    "task_description":`${editTask.task_description}` ,
+    "completion": false,
   });
 
+  const [assigneeData, setAssignee] = useState({
+    assignee: AssignmentTaskData.assignee,
+  });
+
+  console.log(editTaskForm);
+
   const history = useHistory();
+
+  useEffect(() => {
+    
+
+    axios
+      .get("https://school-in-the-cloud-bwpt15.herokuapp.com/api/tasks")
+      .then((res) => {
+        props.setTasksData(res.data);
+      })
+      .catch((err) => {
+        alert(err);
+      });
+
+    
+  }, []);
 
   function submitHandler(e) {
     e.preventDefault();
     axios
       .put(
-        `https://school-in-the-cloud-bwpt15.herokuapp.com/api/auth/${task_id}`,
+        `https://school-in-the-cloud-bwpt15.herokuapp.com/api/tasks/${task_id}`,
         editTaskForm
       )
       .then((res) => {
-        // we should update the global UserData and go back to Admin home
-        // Admin home will re-render tasks with new data
-        history.push(`/admin/${user_id}`);
-      });
+        console.log(res);
+        axios.put()
+        history.goBack();
+
+      })
+      .catch((err) =>
+        alert("Not able to update the task go back and try again")
+      );
   }
 
   function changeHandler(e) {
     const newEditTaskFormData = {
       ...editTaskForm,
-      [e.target.name]: [e.target.value],
+      [e.target.name]: e.target.value,
     };
     setEditTaskForm(newEditTaskFormData);
+  }
+
+  function assignmentChange(e){
+    const newAssignee = {
+      ...assigneeData,
+      [e.target.name]: e.target.value
+    }
+    setAssignee(newAssignee);
   }
 
   return (
@@ -54,8 +88,8 @@ function AdminEdit(props) {
         <input
           type="text"
           name="assignee"
-          value={editTaskForm.assignee}
-          onChange={changeHandler}
+          value={assigneeData.assignee}
+          onChange={assignmentChange}
         />
       </label>
       <label htmlFor="task_description">
