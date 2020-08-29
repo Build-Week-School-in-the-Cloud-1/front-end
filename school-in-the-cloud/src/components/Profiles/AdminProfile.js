@@ -1,34 +1,41 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import {
   Link,
   NavLink,
   useRouteMatch,
-  Switch,
   useParams,
   useHistory,
 } from "react-router-dom";
 import deleteIcon from "../../assets/delete-icon.png";
 import editIcon from "../../assets/edit-icon.png";
 import axios from "axios";
+import LogOutButton from "./LogOutButton";
 
 function AdminHome(props) {
-  // const openTasks = props.userData.tasks.filter((task) => {
-  //   return task.completion === "false";
-  // });
+  const openTasks = props.tasksData.filter((task) => {
+    return task.completion === false;
+  });
 
-  // const closedTasks = props.userData.tasks.filter((task) => {
-  //   return task.completion === "true";
-  // });
-
-  // task array is not held within user object, need to refactor for separate call to task table.
-
-  
+  const closedTasks = props.tasksData.filter((task) => {
+    return task.completion === true;
+  });
 
   const { url } = useRouteMatch();
 
   const { user_id } = useParams();
 
   const history = useHistory();
+
+  useEffect(() => {
+    axios
+      .get("https://school-in-the-cloud-bwpt15.herokuapp.com/api/tasks")
+      .then((res) => {
+        props.setTasksData(res.data);
+      })
+      .catch((err) => {
+        alert(err);
+      });
+  }, []);
 
   function deleteTask(e) {
     e.preventDefault();
@@ -41,20 +48,30 @@ function AdminHome(props) {
         `https://school-in-the-cloud-bwpt15.herokuapp.com/api/tasks/${taskId}`
       )
       .then((res) => {
-        // re-render Admin page with updated user data.
-        //Deleted task shouldn't be in the tasks array
-        history.push(`/admin/${user_id}`);
+        history.go(0);
       })
-      .catch((error) => alert(error.response.data.message));
+      .catch((error) => alert(`couldn't delete :( `));
   }
 
   return (
     <div className="adminhome">
-      <header className="header">
-        <h1>Hello, {props.userData.fname} </h1>
-        <NavLink to={`${url}/newtask`}>
-          <button className="newTaskButton">Create New Task</button>
-        </NavLink>
+      <header className="header-admin">
+        <div className="header-content">
+          <h1>
+            Hello, {props.usersData.user.fname} {props.usersData.user.lname}
+          </h1>
+          <h3>Bio: {props.usersData.user.bio} </h3>
+          <h3>Location: {props.usersData.user.country} </h3>
+        </div>
+
+        <div className="buttons">
+          <NavLink to={`${url}/newtask`}>
+            <button className="newTaskButton">Create New Task</button>
+          </NavLink>
+          <NavLink to="/">
+            <LogOutButton userToken={props.usersData.token} />
+          </NavLink>
+        </div>
       </header>
       <div className="tasks">
         <section className="open">
@@ -63,11 +80,7 @@ function AdminHome(props) {
             return (
               <div className="task">
                 <h2>{task.task_name}</h2>
-                <img
-                  src={deleteIcon}
-                  alt={task.id}
-                  onClick={deleteTask}
-                />
+                <img src={deleteIcon} alt={task.id} onClick={deleteTask} />
                 <Link to={`/admin/${user_id}/edit/${task.id}`}>
                   <img src={editIcon} alt="edit icon" />
                 </Link>
@@ -82,12 +95,7 @@ function AdminHome(props) {
             return (
               <div className="task">
                 <h2>{task.task_name}</h2>
-                <img
-                  src={deleteIcon}
-                  alt={task.id}
-                  onClick={deleteTask}
-                //   value={task.id}
-                />
+                <img src={deleteIcon} alt={task.id} onClick={deleteTask} />
               </div>
             );
           })*/}

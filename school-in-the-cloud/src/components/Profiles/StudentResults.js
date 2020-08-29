@@ -1,24 +1,28 @@
-import React, { useState, useEffect } from "react";
-import { useHistory, Route, Switch, useParams } from "react-router-dom";
+import React from "react";
+import profilePlaceholderIcon from "../../assets/profile-placeholder-icon.png";
 
-function StudentResults(props){
-    console.log(props.searchResponseData.map)
-    return(
-        <section className="results">
-          
-          {props.searchResponseData.map(teacher => {
-              return (
-                <div className="teacher" key={teacher.id}>
-                    <h3>Name: {teacher.name}</h3>
-                    <p>Location: {teacher.location}</p>
-                </div>
-              )
-          })}
+function StudentResults(props) {
+  const matchingResponseData = props.studentSearchResponse
+              .filter((result) => result.country == props.studentSearchData.country )
+              .filter((result)=> result.role == "Volunteer");
 
-    
-        </section>
-    
-    )
+  return (
+    <section className="results">
+      {matchingResponseData.map((teacher) => {
+        return (
+          <div className="teacher" key={teacher.id}>
+          <img src={profilePlaceholderIcon} alt="placeholder img"/>
+            <h3>
+              Name: {teacher.fname} {teacher.lname}
+            </h3>
+            <h4>Location: {teacher.country}</h4>
+            <h4>Bio: {teacher.bio} </h4>
+            
+          </div>
+        );
+      })}
+    </section>
+  );
 }
 
 export default StudentResults;

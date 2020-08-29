@@ -1,5 +1,4 @@
 import React, { useState, useEffect, Component } from "react";
-//import { CountryDropdown } from "react-country-region-selector";
 import { useHistory } from "react-router-dom";
 import { connect } from "react-redux";
 import { formPost } from "../../actions/formActions";
@@ -23,6 +22,9 @@ const signUpFormSchema = yup.object().shape({
 });
 
 function SignUp(props) {
+
+  //console.log(props);
+
   const [signUpFormData, setSignUpFormData] = useState({
     fname: "",
     lname: "",
@@ -31,6 +33,7 @@ function SignUp(props) {
     password: "",
     country: "",
     role: "",
+    bio: "",
   });
 
   const [buttonDisabled, setButtonDisabled] = useState(true);
@@ -42,8 +45,6 @@ function SignUp(props) {
     props.formPost("register", signUpFormData);
     window.localStorage.setItem("token", props.userData.token);
   }
-
- 
 
   function changeHandler(e) {
     const newFormData = {
@@ -135,6 +136,15 @@ function SignUp(props) {
           return <option value={country.name}>{country.name}</option>;
         })}
       </select>
+      <textarea
+        name="bio"
+        value={signUpFormData.bio}
+        id=""
+        cols="30"
+        rows="10"
+        placeholder="Enter your bio here"
+        onChange={changeHandler}
+      />
       <br />
       <button disabled={buttonDisabled}>Sign Up</button>
     </form>

@@ -1,12 +1,10 @@
 import React, { useState, useEffect } from "react";
-import { useHistory, Switch, Route } from "react-router-dom";
+import { useHistory} from "react-router-dom";
 import * as yup from "yup";
 import { connect } from "react-redux";
 import { formPost } from "../../actions/formActions";
 import axios from "axios";
-import AdminHome from "../Profiles/AdminProfile";
-import StudentHome from "../Profiles/StudentProfile";
-import VolunteerHome from "../Profiles/VolunteerProfile";
+
 
 const loginFormSchema = yup.object().shape({
   email: yup.string().email(),
@@ -29,29 +27,7 @@ function Login(props) {
 
   const history = useHistory();
 
-  const testData = {
-    role: "admin",
-    user_id: 8,
-    fname: "Test",
-    tasks: [
-      {
-        id: "1",
-        task_name: "Sample task 1",
-        task_description: "Sample description 1",
-        completion: "false",
-        assignee: "Sample person 1",
-      },
-      {
-        id: "2",
-        task_name: "Sample task 2",
-        task_description: "Sample description 2",
-        completion: "true",
-        assignee: "Sample person 2",
-      },
-    ],
-  };
-
-  function submitHandler(e) {
+  async function submitHandler(e) {
     e.preventDefault();
     // axios
     //   .post(
