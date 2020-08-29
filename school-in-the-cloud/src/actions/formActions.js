@@ -7,9 +7,9 @@ export const POST_FAIL = "FETCH_FAIL";
 export const formPost = (type, form) => dispatch => {
     dispatch({ type: POST_START });
 
-    axios.post("https://school-in-the-cloud-bwpt15.herokuapp.com/api/auth/" + type, form)
+    axios.post("https://school-in-the-cloud-bwpt15.herokuapp.com/api/" + type, form)
     .then(res => {
-        console.log(res);
+        console.log("action log",res);
         dispatch({ type: POST_SUCCESS, payload: res.data });
     })
     .catch(err => {

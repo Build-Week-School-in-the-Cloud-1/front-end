@@ -6,6 +6,7 @@ import {
   useParams,
   useHistory,
 } from "react-router-dom";
+import { connect } from "react-redux";
 import deleteIcon from "../../assets/delete-icon.png";
 import editIcon from "../../assets/edit-icon.png";
 import axios from "axios";
@@ -58,19 +59,17 @@ function AdminHome(props) {
       <header className="header-admin">
         <div className="header-content">
           <h1>
-            Hello, {props.usersData.user.fname} {props.usersData.user.lname}
+            Hello, {props.user.fname} {props.user.lname}
           </h1>
-          <h3>Bio: {props.usersData.user.bio} </h3>
-          <h3>Location: {props.usersData.user.country} </h3>
+          <h3>Bio: {props.user.bio} </h3>
+          <h3>Location: {props.user.country} </h3>
         </div>
 
         <div className="buttons">
           <NavLink to={`${url}/newtask`}>
             <button className="newTaskButton">Create New Task</button>
           </NavLink>
-          <NavLink to="/">
-            <LogOutButton userToken={props.usersData.token} />
-          </NavLink>
+          
         </div>
       </header>
       <div className="tasks">
@@ -105,4 +104,10 @@ function AdminHome(props) {
   );
 }
 
-export default AdminHome;
+const mapStateToProps = state => {
+  return{
+    user: state.userData.user
+  };
+};
+
+export default connect(mapStateToProps, {})(AdminHome);

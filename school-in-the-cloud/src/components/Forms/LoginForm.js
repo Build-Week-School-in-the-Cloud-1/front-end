@@ -3,7 +3,6 @@ import { useHistory} from "react-router-dom";
 import * as yup from "yup";
 import { connect } from "react-redux";
 import { formPost } from "../../actions/formActions";
-import axios from "axios";
 
 
 const loginFormSchema = yup.object().shape({
@@ -29,27 +28,10 @@ function Login(props) {
 
   async function submitHandler(e) {
     e.preventDefault();
-    // axios
-    //   .post(
-    //     "https://school-in-the-cloud-bwpt15.herokuapp.com/api/auth/login",
-    //     loginFormData
-    //   )
-    //   .then((res) => {
-    //     console.log(res);
-    //     history.push(`/${res.data.user.role}/${res.data.user.id}`);
-
-    //     setLoginFormData({
-    //       email: "",
-    //       password: "",
-    //     });
-    //   })
-    //   .catch((error) => {
-    //     alert(error.message);
-    //   });
-
-    props.formPost("login", loginFormData);
-    console.log(props.userData);
+    props.formPost("auth/login", loginFormData);
     window.localStorage.setItem("token", props.userData.token);
+    console.log(props.userData);
+    //window.location.href = "/Admin/7";
   }
 
   function changeHandler(e) {

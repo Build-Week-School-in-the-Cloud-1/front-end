@@ -7,7 +7,19 @@ import {
 const initialState = {
         userData: {
             token: "",
-            user: {}
+            user: {
+                id: "",
+                fname: "test",
+                lname: "",
+                email: "",
+                username: "",
+                password: "",
+                country: "",
+                role: "",
+                bio: "",
+                volunteer_time: "",
+                student_time: "",
+            }
         },
         isPosting: false,
         error: ""

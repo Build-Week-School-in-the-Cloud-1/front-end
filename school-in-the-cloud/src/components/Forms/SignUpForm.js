@@ -42,7 +42,7 @@ function SignUp(props) {
 
   function submitHandler(e) {
     e.preventDefault();
-    props.formPost("register", signUpFormData);
+    props.formPost("auth/register", signUpFormData);
     window.localStorage.setItem("token", props.userData.token);
   }
 
