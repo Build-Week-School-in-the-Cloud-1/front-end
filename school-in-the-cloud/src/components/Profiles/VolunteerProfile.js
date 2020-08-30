@@ -1,5 +1,6 @@
 import React, {useEffect } from "react";
 import {useParams, NavLink } from "react-router-dom";
+import { connect } from "react-redux";
 import completeIcon from "../../assets/complete-icon.png";
 import getStartedIcon from "../../assets/get-started-icon.png";
 import axios from "axios";
@@ -35,14 +36,14 @@ function VolunteerHome(props) {
       <header className="header-volunteer">
         <div classname="header-content">
           <h1>
-            Hello, {props.usersData.user.fname} {props.usersData.user.lname}
+            Hello, {props.user.fname} {props.user.lname}
           </h1>
-          <h3>Bio: {props.usersData.user.bio} </h3>
-          <h3>Location: {props.usersData.user.country} </h3>
+          <h3>Bio: {props.user.bio} </h3>
+          <h3>Location: {props.user.country} </h3>
         </div>
         <div className="buttons">
           <NavLink to="/">
-            <LogOutButton userToken={props.usersData.token} />
+            <LogOutButton />
           </NavLink>
         </div>
       </header>
@@ -78,4 +79,10 @@ function VolunteerHome(props) {
   );
 }
 
-export default VolunteerHome;
+const mapStateToProps = state => {
+  return{
+    user: state.userData.user
+  };
+};
+
+export default connect(mapStateToProps, {})(VolunteerHome);

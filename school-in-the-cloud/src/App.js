@@ -10,6 +10,8 @@ import AdminNewTask from "./components/Profiles/AdminNewTask";
 import StudentHome from "./components/Profiles/StudentProfile";
 import VolunteerHome from "./components/Profiles/VolunteerProfile";
 import VolunteerTaskComplete from "./components/Profiles/VolunteerTaskComplete";
+import StudentResults from "./components/Profiles/StudentResults";
+import PrivateRoute from "./utils/PrivateRoute";
 import Home from "./components/Home";
 import userData from "./components/userData";
 import taskData from "./components/TasksData";
@@ -20,9 +22,14 @@ import teacherData from "./components/TeacherData";
 // Below userData is a sample of the data to be passed in props
 
 function App(props) {
-  const [usersData, setUsersData] = useState(userData);
   const [tasksData, setTasksData] = useState(taskData);
   const [teachersData, setTeachersData] = useState(teacherData);
+
+  const [studentSearchData, setStudentSearchData] = useState({
+    country: "",
+    availability: "",
+    subject: "",
+  });
 
   return (
     <div className="App">
@@ -50,13 +57,16 @@ function App(props) {
         </Route>
         <Route path="/student/:user_id">
           <StudentHome
-            usersData={usersData}
             teachersData={teachersData}
+            studentSearchData={studentSearchData}
+            setStudentSearchData={setStudentSearchData}
           />
+        </Route>
+        <Route path="/student/:user_id/results">
+          <StudentResults studentSearchData={studentSearchData} />
         </Route>
         <Route exact path="/volunteer/:user_id">
           <VolunteerHome
-            usersData={usersData}
             tasksData={tasksData}
             setTasksData={setTasksData}
           />
@@ -66,7 +76,7 @@ function App(props) {
             tasksData={tasksData}
           />
         </Route>
-        <Route exact path="/" usersData={usersData}>
+        <Route exact path="/">
           <Home />
         </Route>
       </Switch>

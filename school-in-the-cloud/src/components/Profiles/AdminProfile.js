@@ -75,7 +75,7 @@ function AdminHome(props) {
       <div className="tasks">
         <section className="open">
           <h3>Open Tasks</h3>
-          {/*openTasks.map((task) => {
+          {openTasks.map((task) => {
             return (
               <div className="task">
                 <h2>{task.task_name}</h2>
@@ -85,19 +85,19 @@ function AdminHome(props) {
                 </Link>
               </div>
             );
-          })*/}
+          })}
         </section>
         <section className="closed">
           <h3>Closed Tasks</h3>
 
-          {/*closedTasks.map((task) => {
+          {closedTasks.map((task) => {
             return (
               <div className="task">
                 <h2>{task.task_name}</h2>
                 <img src={deleteIcon} alt={task.id} onClick={deleteTask} />
               </div>
             );
-          })*/}
+          })}
         </section>
       </div>
     </div>

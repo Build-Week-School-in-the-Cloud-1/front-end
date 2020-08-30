@@ -1,5 +1,5 @@
 import React, { useState, useEffect, Component } from "react";
-import { useHistory } from "react-router-dom";
+import { Redirect } from "react-router-dom";
 import { connect } from "react-redux";
 import { formPost } from "../../actions/formActions";
 import countryList from "./countryList";
@@ -38,12 +38,9 @@ function SignUp(props) {
 
   const [buttonDisabled, setButtonDisabled] = useState(true);
 
-  const history = useHistory();
-
   function submitHandler(e) {
     e.preventDefault();
     props.formPost("auth/register", signUpFormData);
-    window.localStorage.setItem("token", props.userData.token);
   }
 
   function changeHandler(e) {
@@ -60,6 +57,11 @@ function SignUp(props) {
       setButtonDisabled(!valid);
     });
   }, [signUpFormData]);
+
+  if(window.localStorage.getItem("token") && window.localStorage.getItem("token").length > 1){
+    const route = `/${props.userData.user.role}/${props.userData.user.id}`;
+    return <Redirect to={route} />
+  }
 
   return (
     <form action="" className="form" onSubmit={submitHandler}>

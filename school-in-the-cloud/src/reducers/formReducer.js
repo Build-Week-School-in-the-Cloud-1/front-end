@@ -1,4 +1,7 @@
 import {
+    FETCH_START,
+    FETCH_SUCCESS,
+    FETCH_FAIL,
     POST_START,
     POST_SUCCESS,
     POST_FAIL
@@ -21,12 +24,31 @@ const initialState = {
                 student_time: "",
             }
         },
+        results: [],
         isPosting: false,
+        isFetching: false,
         error: ""
 };
 
 const formReducer = (state = initialState, action) => {
     switch(action.type){
+        case FETCH_START:
+            return{
+                ...state,
+                isFetching: true
+            }
+        case FETCH_SUCCESS:
+            return{
+                ...state,
+                isFetching: false,
+                results: action.payload
+            }
+        case FETCH_FAIL:
+            return{
+                ...state,
+                isFetching: false,
+                error: action.payload
+            }
         case POST_START:
             return{
                 ...state,

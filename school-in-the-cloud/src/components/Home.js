@@ -1,6 +1,6 @@
 import React from "react";
 import {  NavLink} from "react-router-dom";
-function Home(props) {
+function Home() {
   return (
     <div className="home">
       <header className="header homepage">

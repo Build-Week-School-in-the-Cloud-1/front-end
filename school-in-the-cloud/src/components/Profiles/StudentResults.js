@@ -1,10 +1,13 @@
 import React from "react";
+import { connect } from "react-redux";
 import profilePlaceholderIcon from "../../assets/profile-placeholder-icon.png";
 
 function StudentResults(props) {
-  const matchingResponseData = props.studentSearchResponse
+  const matchingResponseData = props.teachers
               .filter((result) => result.country == props.studentSearchData.country )
               .filter((result)=> result.role == "Volunteer");
+
+  console.log("teachers", props.teachers);
 
   return (
     <section className="results">
@@ -25,4 +28,10 @@ function StudentResults(props) {
   );
 }
 
-export default StudentResults;
+const mapStateToProps = state => {
+  return{
+    teachers: state.results
+  };
+};
+
+export default connect(mapStateToProps, {})(StudentResults);

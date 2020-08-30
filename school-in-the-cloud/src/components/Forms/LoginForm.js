@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
-import { useHistory} from "react-router-dom";
 import * as yup from "yup";
 import { connect } from "react-redux";
 import { formPost } from "../../actions/formActions";
+import { Redirect } from "react-router-dom";
 
 
 const loginFormSchema = yup.object().shape({
@@ -24,14 +24,9 @@ function Login(props) {
 
   const [buttonDisabled, setButtonDisabled] = useState(true);
 
-  const history = useHistory();
-
   async function submitHandler(e) {
     e.preventDefault();
     props.formPost("auth/login", loginFormData);
-    window.localStorage.setItem("token", props.userData.token);
-    console.log(props.userData);
-    //window.location.href = "/Admin/7";
   }
 
   function changeHandler(e) {
@@ -49,7 +44,13 @@ function Login(props) {
     });
   }, [loginFormData]);
 
+  if(window.localStorage.getItem("token") && window.localStorage.getItem("token").length > 1){
+    const route = `/${props.userData.user.role}/${props.userData.user.id}`;
+    return <Redirect to={route} />
+  }
+
   return (
+
     <div>
       <form onSubmit={submitHandler} name="LoginForm" className="form">
         <label htmlFor="email" className="email">
