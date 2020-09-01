@@ -1,15 +1,14 @@
 import React, { useState, useEffect } from "react";
-import { useHistory, useParams } from "react-router-dom";
+import { useParams, Redirect } from "react-router-dom";
+import { connect } from "react-redux";
+import { dataFetch, dataPut } from "../../actions/taskActions";
 import axios from "axios";
 import AssignmentTaskData from "../AssignmentTaskData";
 
 function AdminEdit(props) {
-  console.log(props);
+  const { task_id, user_id } = useParams();
 
-  const { task_id } = useParams();
-
-  const editTask = props.tasksData.find((task) => task.id == task_id);
-  console.log(editTask.task_description);
+  const editTask = props.tasks.find((task) => task.id == task_id);
 
   const [editTaskForm, setEditTaskForm] = useState({
     "task_name": `${editTask.task_name}`,
@@ -17,45 +16,46 @@ function AdminEdit(props) {
     "completion": false,
   });
 
+  const [posted, setPosted] = useState(false);
+
   const [assigneeData, setAssignee] = useState({
     assignee: AssignmentTaskData.assignee,
   });
 
-  console.log(editTaskForm);
-
-  const history = useHistory();
-
   useEffect(() => {
     
 
-    axios
-      .get("https://school-in-the-cloud-bwpt15.herokuapp.com/api/tasks")
-      .then((res) => {
-        props.setTasksData(res.data);
-      })
-      .catch((err) => {
-        alert(err);
-      });
+    // axios
+    //   .get("https://school-in-the-cloud-bwpt15.herokuapp.com/api/tasks")
+    //   .then((res) => {
+    //     props.setTasksData(res.data);
+    //   })
+    //   .catch((err) => {
+    //     alert(err);
+    //   });
 
-    
+    props.dataFetch();
+
   }, []);
 
-  function submitHandler(e) {
+  async function submitHandler(e) {
     e.preventDefault();
-    axios
-      .put(
-        `https://school-in-the-cloud-bwpt15.herokuapp.com/api/tasks/${task_id}`,
-        editTaskForm
-      )
-      .then((res) => {
-        console.log(res);
-        axios.put()
-        history.goBack();
+    // axios
+    //   .put(
+    //     `https://school-in-the-cloud-bwpt15.herokuapp.com/api/tasks/${task_id}`,
+    //     editTaskForm
+    //   )
+    //   .then((res) => {
+    //     console.log(res);
+    //     axios.put()
+    //     history.goBack();
 
-      })
-      .catch((err) =>
-        alert("Not able to update the task go back and try again")
-      );
+    //   })
+    //   .catch((err) =>
+    //     alert("Not able to update the task go back and try again")
+    //   );
+    await props.dataPut(task_id, editTaskForm);
+    setPosted(true);
   }
 
   function changeHandler(e) {
@@ -72,6 +72,10 @@ function AdminEdit(props) {
       [e.target.name]: e.target.value
     }
     setAssignee(newAssignee);
+  }
+
+  if(posted){
+    return <Redirect to={`/Admin/${user_id}`} />
   }
 
   return (
@@ -105,4 +109,10 @@ function AdminEdit(props) {
   );
 }
 
-export default AdminEdit;
+const mapStateToProps = state => {
+  return{
+    tasks: state.taskReducer.tasks
+  }
+};
+
+export default connect(mapStateToProps, {dataFetch, dataPut})(AdminEdit);

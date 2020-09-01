@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
-import { useHistory} from "react-router-dom";
 import * as yup from "yup";
-import axios from "axios";
+import { connect } from "react-redux";
+import { formPost } from "../../actions/formActions";
+import { Redirect } from "react-router-dom";
 
 
 const loginFormSchema = yup.object().shape({
@@ -21,31 +22,11 @@ function Login(props) {
     password: "",
   });
 
-  const [buttonDisabled, setButtonDisabled] = useState("true");
+  const [buttonDisabled, setButtonDisabled] = useState(true);
 
-  const history = useHistory();
-
-  function submitHandler(e) {
+  async function submitHandler(e) {
     e.preventDefault();
-    axios
-      .post(
-        "https://school-in-the-cloud-bwpt15.herokuapp.com/api/auth/login",
-        loginFormData
-      )
-      .then((res) => {
-        console.log(res)
-        props.setUsersData(res.data);
-
-        history.push(`/${res.data.user.role}/${res.data.user.id}`);
-
-        setLoginFormData({
-          email: "",
-          password: "",
-        });
-      })
-      .catch((error) => {
-        alert(error);
-      });
+    props.formPost("auth/login", loginFormData);
   }
 
   function changeHandler(e) {
@@ -63,7 +44,13 @@ function Login(props) {
     });
   }, [loginFormData]);
 
+  if(window.localStorage.getItem("token") && window.localStorage.getItem("token").length > 1){
+    const route = `/${props.userData.user.role}/${props.userData.user.id}`;
+    return <Redirect to={route} />
+  }
+
   return (
+
     <div>
       <form onSubmit={submitHandler} name="LoginForm" className="form">
         <label htmlFor="email" className="email">
@@ -73,7 +60,7 @@ function Login(props) {
             value={loginFormData.email}
             onChange={changeHandler}
             placeholder="Enter email"
-            autocomplete="off"
+            autoComplete="off"
           />
         </label>
         <label htmlFor="password" className="password">
@@ -91,4 +78,12 @@ function Login(props) {
   );
 }
 
-export default Login;
+const mapStateToProps = state =>{
+  return{
+    userData: state.formReducer.userData,
+    isPosting: state.formReducer.isPosting,
+    error: state.formReducer.error
+  };
+};
+
+export default connect(mapStateToProps, {formPost})(Login);

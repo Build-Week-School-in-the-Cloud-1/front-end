@@ -1,7 +1,8 @@
 import React, { useState, useEffect, Component } from "react";
-import { useHistory } from "react-router-dom";
+import { Redirect } from "react-router-dom";
+import { connect } from "react-redux";
+import { formPost } from "../../actions/formActions";
 import countryList from "./countryList";
-import axios from "axios";
 import * as yup from "yup";
 
 const signUpFormSchema = yup.object().shape({
@@ -37,41 +38,9 @@ function SignUp(props) {
 
   const [buttonDisabled, setButtonDisabled] = useState(true);
 
-  const history = useHistory();
-
   function submitHandler(e) {
     e.preventDefault();
-
-    axios
-      .post(
-        "https://school-in-the-cloud-bwpt15.herokuapp.com/api/auth/register",
-        signUpFormData
-      )
-      .then((res) => {
-
-        console.log(res);
-        
-        props.setUsersData(res.data);
-
-        setSignUpFormData({
-          fname: "",
-          lname: "",
-          email: "",
-          username: "",
-          password: "",
-          country: "",
-          role: "",
-          bio: "",
-        });
-
-        history.push(`/${res.data.user.role}/${res.data.user.id}`);
-        // history.push(`/login`);
-
-        
-      })
-      .catch((error) => {
-        alert(error);
-      });
+    props.formPost("auth/register", signUpFormData);
   }
 
   function changeHandler(e) {
@@ -88,6 +57,11 @@ function SignUp(props) {
       setButtonDisabled(!valid);
     });
   }, [signUpFormData]);
+
+  if(window.localStorage.getItem("token") && window.localStorage.getItem("token").length > 1){
+    const route = `/${props.userData.user.role}/${props.userData.user.id}`;
+    return <Redirect to={route} />
+  }
 
   return (
     <form action="" className="form" onSubmit={submitHandler}>
@@ -179,4 +153,12 @@ function SignUp(props) {
   );
 }
 
-export default SignUp;
+const mapStateToProps = state =>{
+  return{
+    userData: state.formReducer.userData,
+    isPosting: state.formReducer.isPosting,
+    error: state.formReducer.error
+  };
+};
+
+export default connect(mapStateToProps, {formPost})(SignUp);

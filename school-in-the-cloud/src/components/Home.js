@@ -1,6 +1,6 @@
 import React from "react";
 import {  NavLink} from "react-router-dom";
-function Home(props) {
+function Home() {
   return (
     <div className="home">
       <header className="header homepage">
@@ -18,9 +18,9 @@ function Home(props) {
         width="70%"
         height="50%"
         src="https://www.youtube.com/embed/gLdXxFS8BV4"
-        frameborder="0"
+        frameBorder="0"
         allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
-        allowfullscreen
+        allowFullScreen
       ></iframe>
       <div className="content">
         <section className="middle-content">

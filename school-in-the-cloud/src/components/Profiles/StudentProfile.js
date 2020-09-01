@@ -4,12 +4,14 @@ import {
   Route,
   Switch,
   useParams,
-  NavLink
+  NavLink,
+  Redirect
 } from "react-router-dom";
+import { connect } from "react-redux";
+import { dataFetch } from "../../actions/formActions";
 import countryList from "../Forms/countryList";
 import StudentMyTeacher from "./StudentMyTeacher";
-import StudentResults from "./StudentResults";
-import axios from "axios";
+import teacherData from "../TeacherData";
 import LogOutButton from "./LogOutButton";
 
 function StudentHome(props) {
@@ -19,65 +21,51 @@ function StudentHome(props) {
 
   const url = `/student/${user_id}`;
 
-  const [studentSearchData, setStudentSearchData] = useState({
-    country: "",
-    availability: "",
-    subject: "",
-  });
-
-  const [studentSearchResponse, setStudentSearchResponse] = useState([{
-    id: "",
-    fname: "",
-    lname: "",
-    email: "",
-    username: "",
-    password: "",
-    country: "",
-    role: "",
-    bio: "",
-    volunteer_time: "",
-    student_time: "",
-  }])
-
+  
 
   function submitHandler(e) {
     e.preventDefault();
-    axios
-      .get("https://school-in-the-cloud-bwpt15.herokuapp.com/api/admin/users")
-      .then((res) => {
-        setStudentSearchResponse(res.data);
-        history.push(`${url}/results`);
-      })
-      .catch((err) => {
-        alert(err);
-      });
+    // axios
+    //   .get("https://school-in-the-cloud-bwpt15.herokuapp.com/api/admin/users")
+    //   .then((res) => {
+    //     setStudentSearchResponse(res.data);
+    //     history.push(`${url}/results`);
+    //   })
+    //   .catch((err) => {
+    //     alert(err);
+    //   });
+    console.log("before", props.user);
+    props.dataFetch("admin/users");
+    console.log("after", props.user);
   }
-
-  
-
 
   function changeHandler(e) {
     const newSearchData = {
-      ...studentSearchData,
+      ...props.studentSearchData,
       [e.target.name]: e.target.value,
     };
-    setStudentSearchData(newSearchData);
+    props.setStudentSearchData(props.newSearchData);
+  }
+
+  if(!props.isFetching && props.teachers.length > 0){
+    const route = `/student/${props.user.id}/results`;
+    return <Redirect to={route} />
   }
 
   return (
     <div className="studenthome">
       <header className="header-student">
-      <div classname="header-content">
+      <div className="header-content">
           <h1>
-            Hello, {props.usersData.user.fname} {props.usersData.user.lname}
+            Hello, {props.user.fname} {props.user.lname}
           </h1>
-          <h3>Bio: {props.usersData.user.bio} </h3>
-          <h3>Location: {props.usersData.user.country} </h3>
+          <h3>Bio: {props.user.bio} </h3>
+          <h3>Location: {props.user.country} </h3>
         </div>
 
         <div className="buttons">
           <NavLink to="/">
-            <LogOutButton userToken={props.usersData.token} />
+            <LogOutButton />
           </NavLink>
         </div>
       </header>
@@ -126,18 +114,18 @@ function StudentHome(props) {
             <button>Find</button>
           </form>
         </section>
-
-        <Switch>
-          <Route exact path={`/student/${user_id}`}>
-            <StudentMyTeacher teachersData={props.teachersData} />
-          </Route>
-          <Route exact path={`/student/${user_id}/results`}>
-            <StudentResults studentSearchData={studentSearchData} studentSearchResponse ={studentSearchResponse} />
-          </Route>
-        </Switch>
+          <StudentMyTeacher teachersData={teacherData} />
       </div>
     </div>
   );
 }
 
-export default StudentHome;
+const mapStateToProps = state => {
+  return{
+    user: state.formReducer.userData.user,
+    isFetching: state.formReducer.isFetching,
+    teachers: state.formReducer.results
+  };
+};
+
+export default connect(mapStateToProps, {dataFetch})(StudentHome);
