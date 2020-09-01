@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import "./App.css";
 import { Switch, Route } from "react-router-dom";
-import { connect } from "react-redux";
 import Login from "./components/Forms/LoginForm";
 import SignUp from "./components/Forms/SignUpForm";
 import AdminHome from "./components/Profiles/AdminProfile";
@@ -11,7 +10,6 @@ import StudentHome from "./components/Profiles/StudentProfile";
 import VolunteerHome from "./components/Profiles/VolunteerProfile";
 import VolunteerTaskComplete from "./components/Profiles/VolunteerTaskComplete";
 import StudentResults from "./components/Profiles/StudentResults";
-import StudentMyTeacher from "./components/Profiles/StudentMyTeacher";
 import PrivateRoute from "./utils/PrivateRoute";
 import Home from "./components/Home";
 
@@ -20,7 +18,7 @@ import Home from "./components/Home";
 // App will pass it as props to all its childs while routing.
 // Below userData is a sample of the data to be passed in props
 
-function App(props) {
+function App() {
 
   return (
     <div className="App">
@@ -31,10 +29,10 @@ function App(props) {
         <Route exact path="/login">
           <Login />
         </Route>
-        
+
+        <PrivateRoute path="/Admin/:user_id/edit/:task_id" component={AdminEdit} />
         <PrivateRoute path="/Admin/:user_id/newtask" component={AdminNewTask} />
         <PrivateRoute path="/Admin/:user_id" component={AdminHome} />
-        <PrivateRoute path="/Admin/edit/:task_id" component={AdminEdit} />
         <PrivateRoute path="/student/:user_id/results" component={StudentResults} />
         <PrivateRoute path="/student/:user_id" component={StudentHome} />
         <PrivateRoute path="/volunteer/:user_id/complete/:task_id" component={VolunteerTaskComplete} />
@@ -48,10 +46,4 @@ function App(props) {
   );
 }
 
-const mapStateToProps = state => {
-  return{
-    user: state.formReducer.userData.user
-  };
-};
-
-export default connect(mapStateToProps, {})(App);
+export default App;
