@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Link,
   NavLink,
@@ -19,6 +19,7 @@ function AdminHome(props) {
   const closedTasks = props.tasks.filter((task) => {
     return task.completion === true;
   });
+  const [deleteFlag, setDeleteFlag] = useState(false);
 
   const { url } = useRouteMatch();
 
@@ -26,15 +27,14 @@ function AdminHome(props) {
 
   useEffect(() => {
     props.dataFetch();
-  }, []);
+    setDeleteFlag(false);
+  }, [deleteFlag]);
 
   function deleteTask(e) {
     e.preventDefault();
-    console.log(e.target);
-
     const taskId = e.target.alt;
-
     props.delData(taskId);
+    setDeleteFlag(true);
   }
 
   return (
@@ -51,6 +51,9 @@ function AdminHome(props) {
         <div className="buttons">
           <NavLink to={`${url}/newtask`}>
             <button className="newTaskButton">Create New Task</button>
+          </NavLink>
+          <NavLink to="/">
+            <LogOutButton />
           </NavLink>
           
         </div>
