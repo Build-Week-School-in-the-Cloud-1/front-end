@@ -5,6 +5,7 @@ function LogOutButton(props) {
 
     function logOut(e) {
         // didn't know exactly how to handle to delete the token
+        window.localStorage.removeItem("token")
     }
 
     return(
