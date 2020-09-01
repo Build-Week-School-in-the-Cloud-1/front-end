@@ -3,21 +3,20 @@ import {
   Link,
   NavLink,
   useRouteMatch,
-  useParams,
-  useHistory,
+  useParams
 } from "react-router-dom";
 import { connect } from "react-redux";
+import { dataFetch, delData } from "../../actions/taskActions";
 import deleteIcon from "../../assets/delete-icon.png";
 import editIcon from "../../assets/edit-icon.png";
-import axios from "axios";
 import LogOutButton from "./LogOutButton";
 
 function AdminHome(props) {
-  const openTasks = props.tasksData.filter((task) => {
+  const openTasks = props.tasks.filter((task) => {
     return task.completion === false;
   });
 
-  const closedTasks = props.tasksData.filter((task) => {
+  const closedTasks = props.tasks.filter((task) => {
     return task.completion === true;
   });
 
@@ -25,17 +24,8 @@ function AdminHome(props) {
 
   const { user_id } = useParams();
 
-  const history = useHistory();
-
   useEffect(() => {
-    axios
-      .get("https://school-in-the-cloud-bwpt15.herokuapp.com/api/tasks")
-      .then((res) => {
-        props.setTasksData(res.data);
-      })
-      .catch((err) => {
-        alert(err);
-      });
+    props.dataFetch();
   }, []);
 
   function deleteTask(e) {
@@ -44,14 +34,7 @@ function AdminHome(props) {
 
     const taskId = e.target.alt;
 
-    axios
-      .delete(
-        `https://school-in-the-cloud-bwpt15.herokuapp.com/api/tasks/${taskId}`
-      )
-      .then((res) => {
-        history.go(0);
-      })
-      .catch((error) => alert(`couldn't delete :( `));
+    props.delData(taskId);
   }
 
   return (
@@ -77,9 +60,11 @@ function AdminHome(props) {
           <h3>Open Tasks</h3>
           {openTasks.map((task) => {
             return (
-              <div className="task">
+              <div className="task" key={task.id}>
                 <h2>{task.task_name}</h2>
-                <img src={deleteIcon} alt={task.id} onClick={deleteTask} />
+                <span onClick={deleteTask}>
+                <img src={deleteIcon} alt={task.id} />
+                </span>
                 <Link to={`/admin/${user_id}/edit/${task.id}`}>
                   <img src={editIcon} alt="edit icon" />
                 </Link>
@@ -92,9 +77,11 @@ function AdminHome(props) {
 
           {closedTasks.map((task) => {
             return (
-              <div className="task">
+              <div className="task" key={task.id}>
                 <h2>{task.task_name}</h2>
-                <img src={deleteIcon} alt={task.id} onClick={deleteTask} />
+                <span onClick={deleteTask}>
+                  <img src={deleteIcon} alt={task.id} />
+                </span>
               </div>
             );
           })}
@@ -106,8 +93,9 @@ function AdminHome(props) {
 
 const mapStateToProps = state => {
   return{
-    user: state.userData.user
+    user: state.formReducer.userData.user,
+    tasks: state.taskReducer.tasks
   };
 };
 
-export default connect(mapStateToProps, {})(AdminHome);
+export default connect(mapStateToProps, {dataFetch, delData})(AdminHome);

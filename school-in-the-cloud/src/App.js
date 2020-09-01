@@ -11,6 +11,7 @@ import StudentHome from "./components/Profiles/StudentProfile";
 import VolunteerHome from "./components/Profiles/VolunteerProfile";
 import VolunteerTaskComplete from "./components/Profiles/VolunteerTaskComplete";
 import StudentResults from "./components/Profiles/StudentResults";
+import StudentMyTeacher from "./components/Profiles/StudentMyTeacher";
 import PrivateRoute from "./utils/PrivateRoute";
 import Home from "./components/Home";
 import userData from "./components/userData";
@@ -40,42 +41,53 @@ function App(props) {
         <Route exact path="/login">
           <Login />
         </Route>
-        <Route exact path="/Admin/:user_id">
-          <AdminHome
-            tasksData={tasksData}
-            setTasksData={setTasksData}
-          />
-        </Route>
-        <Route path="/Admin/:user_id/edit/:task_id">
-          <AdminEdit
-            tasksData={tasksData}
-            setTasksData={setTasksData}
-          />
-        </Route>
-        <Route exact path="/Admin/:user_id/newtask">
+
+
+        {/* <Route exact >
+          <AdminHome />
+        </Route> */}
+        <PrivateRoute path="/Admin/:user_id/newtask" component={AdminNewTask} />
+
+        <PrivateRoute path="/Admin/:user_id" component={AdminHome} />
+
+        {/* <Route path="/Admin/:user_id/edit/:task_id">
+          <AdminEdit />
+        </Route> */}
+
+        <PrivateRoute path="/Admin/edit/:task_id" component={AdminEdit} />
+
+        {/* <Route exact path="/Admin/:user_id/newtask">
           <AdminNewTask />
-        </Route>
-        <Route path="/student/:user_id">
-          <StudentHome
-            teachersData={teachersData}
-            studentSearchData={studentSearchData}
-            setStudentSearchData={setStudentSearchData}
-          />
-        </Route>
-        <Route path="/student/:user_id/results">
-          <StudentResults studentSearchData={studentSearchData} />
-        </Route>
-        <Route exact path="/volunteer/:user_id">
-          <VolunteerHome
-            tasksData={tasksData}
-            setTasksData={setTasksData}
-          />
-        </Route>
-        <Route path="/volunteer/:user_id/complete/:task_id">
-          <VolunteerTaskComplete
-            tasksData={tasksData}
-          />
-        </Route>
+        </Route> */}
+
+        
+
+        {/* <Route path="/student/:user_id">
+          <StudentHome />
+        </Route> */}
+        <PrivateRoute path="/student/:user_id/results" component={StudentResults} />
+
+        <PrivateRoute path="/student/:user_id" component={StudentHome} />
+
+        {/* <Route path="/student/:user_id/results">
+          <StudentResults />
+        </Route> */}
+
+        
+
+        {/* <Route exact path="/volunteer/:user_id">
+          <VolunteerHome />
+        </Route> */}
+        <PrivateRoute path="/volunteer/:user_id/complete/:task_id" component={VolunteerTaskComplete} />
+
+        <PrivateRoute path="/volunteer/:user_id" component={VolunteerHome} />
+
+        {/* <Route path="/volunteer/:user_id/complete/:task_id">
+          <VolunteerTaskComplete />
+        </Route> */}
+
+        
+
         <Route exact path="/">
           <Home />
         </Route>
@@ -86,7 +98,7 @@ function App(props) {
 
 const mapStateToProps = state => {
   return{
-    user: state.userData.user
+    user: state.formReducer.userData.user
   };
 };
 

@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useHistory, useParams } from "react-router-dom";
+import { connect } from "react-redux";
+import { dataPut, completeFetch } from "../../actions/taskActions";
 import axios from "axios";
 
 function VolunteerTaskComplete(props) {
@@ -7,7 +9,7 @@ function VolunteerTaskComplete(props) {
 
   const { task_id } = useParams();
 
-  const completeTask = props.tasksData.find((task) => task.id == task_id);
+  const completeTask = props.tasks.find((task) => task.id == task_id);
 
   const [completeTaskForm, setCompleteTaskForm] = useState({
     task_name: completeTask.task_name,
@@ -25,32 +27,7 @@ function VolunteerTaskComplete(props) {
   const history = useHistory();
 
   useEffect(() => {
-    axios
-      .get("https://school-in-the-cloud-bwpt15.herokuapp.com/api/admin")
-      .then((res) => {
-        console.log(res);
-        const matchingTaskId = res.data.find((task) => task.task_id == task_id);
-        adminUserID = matchingTaskId.user_id;
-        console.log(adminUserID);
-
-        axios
-          .get(
-            "https://school-in-the-cloud-bwpt15.herokuapp.com/api/admin/users"
-          )
-          .then((res) => {
-            console.log(res);
-            const matchingAdminData = res.data.find(
-              (user) => user.id == adminUserID
-            );
-            console.log(matchingAdminData);
-
-            setAssignedBy({
-              fname: matchingAdminData.fname,
-              lname: matchingAdminData.fname,
-            });
-          });
-      })
-      .catch((err) => alert("Couldn't find assignee"));
+    props.completeFetch();
   }, []);
 
   function changeHandler(e) {
@@ -63,18 +40,7 @@ function VolunteerTaskComplete(props) {
 
   function submitHandler(e) {
     e.preventDefault();
-    axios
-      .put(
-        `https://school-in-the-cloud-bwpt15.herokuapp.com/api/tasks/${task_id}`,
-        completeTaskForm
-      )
-      .then((res) => {
-        console.log(res);
-        history.goBack();
-      })
-      .catch((err) => {
-        alert(err);
-      });
+    props.dataPut(task_id, completeTask);
   }
 
   return (
@@ -107,4 +73,10 @@ function VolunteerTaskComplete(props) {
   );
 }
 
-export default VolunteerTaskComplete;
+const mapStateToProps = state => {
+  return{
+    tasks: state.taskReducer.tasks
+  };
+};
+
+export default connect(mapStateToProps, {dataPut, completeFetch})(VolunteerTaskComplete);

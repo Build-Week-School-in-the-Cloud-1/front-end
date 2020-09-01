@@ -1,4 +1,5 @@
 import axios from "axios";
+import { axiosWithAuth } from "../utils/axiosAuth";
 
 export const FETCH_START = "FETCH_START";
 export const FETCH_SUCCESS = "FETCH_SUCCESS";
@@ -11,12 +12,13 @@ export const POST_FAIL = "POST_FAIL";
 export const dataFetch = () => dispatch => {
     dispatch({ type: FETCH_START });
 
-    axios.get("https://school-in-the-cloud-bwpt15.herokuapp.com/api/admin/users")
+    axiosWithAuth().get("https://school-in-the-cloud-bwpt15.herokuapp.com/api/admin/users")
     .then(res => {
         console.log("fetch log", res);
         dispatch({ type: FETCH_SUCCESS, payload: res.data });
     })
     .catch(err => {
+        console.log("error", err);
         dispatch({ type: FETCH_FAIL, payload: err.message });
     });
 };

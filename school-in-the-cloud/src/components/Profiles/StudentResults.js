@@ -4,13 +4,14 @@ import profilePlaceholderIcon from "../../assets/profile-placeholder-icon.png";
 
 function StudentResults(props) {
   const matchingResponseData = props.teachers
-              .filter((result) => result.country == props.studentSearchData.country )
-              .filter((result)=> result.role == "Volunteer");
+              .filter(result => result.country === props.studentSearchData.country )
+              // .filter((result)=> result.role == "Volunteer");
 
-  console.log("teachers", props.teachers);
+  console.log("teachers", matchingResponseData);
 
   return (
     <section className="results">
+      <h1>Hello</h1>
       {matchingResponseData.map((teacher) => {
         return (
           <div className="teacher" key={teacher.id}>

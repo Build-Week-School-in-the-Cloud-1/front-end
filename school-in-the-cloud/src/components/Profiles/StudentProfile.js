@@ -11,7 +11,7 @@ import { connect } from "react-redux";
 import { dataFetch } from "../../actions/formActions";
 import countryList from "../Forms/countryList";
 import StudentMyTeacher from "./StudentMyTeacher";
-import StudentResults from "./StudentResults";
+import teacherData from "../TeacherData";
 import LogOutButton from "./LogOutButton";
 
 function StudentHome(props) {
@@ -47,7 +47,7 @@ function StudentHome(props) {
     props.setStudentSearchData(props.newSearchData);
   }
 
-  if(props.results.length > 0){
+  if(!props.isFetching && props.teachers.length > 0){
     const route = `/student/${props.user.id}/results`;
     return <Redirect to={route} />
   }
@@ -114,13 +114,7 @@ function StudentHome(props) {
             <button>Find</button>
           </form>
         </section>
-
-        <Switch>
-          <Route exact path={`/student/${user_id}`}>
-            <StudentMyTeacher teachersData={props.teachersData} />
-          </Route>
-          
-        </Switch>
+          <StudentMyTeacher teachersData={teacherData} />
       </div>
     </div>
   );
@@ -128,8 +122,9 @@ function StudentHome(props) {
 
 const mapStateToProps = state => {
   return{
-    user: state.userData.user,
-    results: state.results
+    user: state.formReducer.userData.user,
+    isFetching: state.formReducer.isFetching,
+    teachers: state.formReducer.results
   };
 };
 

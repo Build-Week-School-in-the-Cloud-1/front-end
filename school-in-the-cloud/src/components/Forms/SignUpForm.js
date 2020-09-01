@@ -155,9 +155,9 @@ function SignUp(props) {
 
 const mapStateToProps = state =>{
   return{
-    userData: state.userData,
-    isPosting: state.isPosting,
-    error: state.error
+    userData: state.formReducer.userData,
+    isPosting: state.formReducer.isPosting,
+    error: state.formReducer.error
   };
 };
 
